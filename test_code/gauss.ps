@@ -1,0 +1,13 @@
+Sum(n)
+    total = 0
+    for i = 1 to n
+        total = total + i
+
+    return total
+
+Gauss(n)
+    return n * (n + 1) / 2
+
+Test()
+    for i = 0 to 10000
+        AssertEqual(Sum(i), Gauss(i))

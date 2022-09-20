@@ -1,0 +1,43 @@
+left(i)
+    return 2 * i
+
+right(i)
+    return 2 * i + 1
+
+MaxHeapify(A, i)
+    l = 2 * i
+    r = 2 * i + 1
+
+    if l <= A.heapsize and A[l] > A[i]
+        largest_index = l
+    else
+        largest_index = i
+    
+    if r <= A.heapsize and A[r] > A[largest_index]
+        largest_index = r
+
+    if largest_index != i
+        temp = A[largest_index]
+        A[largest_index] = A[i]
+        A[i] = temp
+        MaxHeapify(A, largest_index)
+
+BuildMaxHeap(A)
+    A.heapsize = A.length
+    for i = floor(A.length / 2) down to 1
+        MaxHeapify(A, i)
+
+HeapSort(A)
+    BuildMaxHeap(A)
+    for i = A.length down to 2
+        temp = A[i]
+        A[i] = A[1]
+        A[1] = temp
+        A.heapsize = A.heapsize - 1
+        MaxHeapify(A, 1)
+
+Test()
+    array = Array(5, 8, 2, 9, 1, 3, 6, 4, 7)
+    Print(array)
+    HeapSort(array)
+    Print(array)

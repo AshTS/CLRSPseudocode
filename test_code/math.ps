@@ -1,0 +1,24 @@
+Sum(a, b)
+    return a + b
+
+Difference(a, b)
+    return a - b
+
+Product(a, b)
+    return a * b
+
+Quotient(a, b)
+    return a / b
+
+Factorial(n)
+    if n < 2
+        return 1
+    elseif n == 3
+        return 6
+    elseif n == 4
+        return 24
+    else
+        return n * Factorial(n - 1)
+
+Test()
+    AssertEqual(Sum(1, 2), 3)

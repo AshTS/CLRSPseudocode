@@ -1,0 +1,15 @@
+BubbleSort(A)
+    for end = A.length down to 1
+        for i = 1 to end - 1
+            if A[i] > A[i + 1]
+                temp = A[i]
+                A[i] = A[i + 1]
+                A[i + 1] = temp
+
+    return A
+
+Test()
+    array = Array(5, 8, 3, 9, 1, 2, 6, 4, 7)
+    BubbleSort(array)
+    sorted = Array(1, 2, 3, 4, 5, 6, 7, 8, 9)
+    AssertEqual(array, sorted)
