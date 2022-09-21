@@ -250,6 +250,9 @@ impl<'file> ExecutionFrame<'file> {
         else if name == "Array" {
             Ok(Some(builtin_array(arguments).map_err(|e| e.finish_maybe(function_name.get_token()))?))
         }
+        else if name == "ArrayCreate" {
+            Ok(Some(builtin_array_create(arguments).map_err(|e| e.finish_maybe(function_name.get_token()))?))
+        }
         else if name == "AssertEqual" {
             Ok(Some(builtin_assert_eq(function_name.get_token(), arguments).map_err(|e| e.finish_maybe(function_name.get_token()))?))
         }

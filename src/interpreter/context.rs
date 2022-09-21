@@ -34,6 +34,9 @@ impl<'file> RunTime<'file> {
         else if name == "Array" {
             return super::builtin_array(arguments);
         }
+        else if name == "ArrayCreate" {
+            return super::builtin_array_create(arguments);
+        }
         else if name == "Print" {
             return super::builtin_print(arguments);
         }

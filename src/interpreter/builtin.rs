@@ -44,6 +44,23 @@ pub fn builtin_array<'file>(args: Vec<Value>) -> Result<Value, RuntimeError<'fil
     Ok(Value::Array(Rc::new(RefCell::new((vector, Value::Number(0.0))))))
 }
 
+pub fn builtin_array_create<'file>(args: Vec<Value>) -> Result<Value, RuntimeError<'file>> {
+    let size = get_args1(args)?;
+
+    if let Value::Number(n) = size {
+        if n.fract() == 0.0 && n > 0.0 {
+            Ok(Value::Array(Rc::new(RefCell::new((vec![Value::None; n as usize], Value::Number(0.0))))))
+        }
+        else {
+            Err(RuntimeError::MessageError(format!("array length '{}' is not a positive integer", n)))
+        }
+    }
+    else {
+        Err(RuntimeError::MessageError("array length must be a number".to_string()))
+    }
+}
+
+
 pub fn builtin_print<'file>(args: Vec<Value>) -> Result<Value, RuntimeError<'file>> {
     for (i, arg) in args.iter().enumerate() {
         if i != 0 {
