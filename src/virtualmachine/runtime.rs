@@ -85,7 +85,7 @@ impl<'file> Runtime<'file> {
         }
     }
 
-    pub fn single_step(&mut self) -> Result<bool, GenericError<'file>> {
+    pub fn single_step(&mut self, show_instructions: bool) -> Result<bool, GenericError<'file>> {
         if let Some(last) = self.stack.last_mut() {
             let at_start = last.next_instruction().map(|i| i.associated_line);
             if last.return_value.is_some() {
@@ -93,10 +93,10 @@ impl<'file> Runtime<'file> {
                 if let Some(new_last) = self.stack.last_mut() {
                     new_last.passed_return = Some(value);
                 }
-                self.single_step()?;
+                self.single_step(show_instructions)?;
                 Ok(true)
             }
-            else if let Some((name, args)) = last.single_step()? {
+            else if let Some((name, args)) = last.single_step(show_instructions)? {
                 self.add_stack_frame(name, args)?;
                 Ok(true)
             }
@@ -264,9 +264,11 @@ impl<'file> ExecutionFrame<'file> {
         }
     }
 
-    pub fn single_step(&mut self) -> Result<Option<(VMVariable<'file>, Vec<Value>)>, GenericError<'file>> {
+    pub fn single_step(&mut self, show_instructions: bool) -> Result<Option<(VMVariable<'file>, Vec<Value>)>, GenericError<'file>> {
         let instruction = self.function.instructions[self.line].clone();
-        println!("{}", instruction);
+        if show_instructions {
+            println!("{}", instruction);
+        }
 
         match instruction.instruction_type {
             VMInstructionType::Assign(a, b) => {

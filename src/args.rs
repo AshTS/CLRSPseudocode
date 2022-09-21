@@ -16,7 +16,7 @@ pub enum SubCommand {
     Tokenize {
         file: PathBuf
     },
-    Parser {
+    Parse {
         file: PathBuf
     },
     Execute {
@@ -26,6 +26,17 @@ pub enum SubCommand {
         file: PathBuf
     },
     VMRun {
-        file: PathBuf
+        file: PathBuf,
+        /// Supress the visualization
+        #[clap(short, long, action)]
+        supress: bool,
+
+        /// Don't wait for input
+        #[clap(short, long, action)]
+        no_wait: bool,
+
+        /// Shows instructions as they are executed
+        #[clap(short, long, action)]
+        instructions: bool
     },
 }

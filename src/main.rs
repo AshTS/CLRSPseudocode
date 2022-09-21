@@ -23,7 +23,7 @@ fn main()
             println!("{}", token);
         }
     }
-    else if let args::SubCommand::Parser{ file } = args.sub_command {
+    else if let args::SubCommand::Parse{ file } = args.sub_command {
         let name = file.to_string_lossy().to_string();
         let text = std::fs::read_to_string(file).expect("Unable to read file");
 
@@ -136,7 +136,7 @@ fn main()
             }
         }
     }
-    else if let args::SubCommand::VMRun{ file } = args.sub_command {
+    else if let args::SubCommand::VMRun{ file, supress: hide, no_wait, instructions } = args.sub_command {
         let name = file.to_string_lossy().to_string();
         let text = std::fs::read_to_string(file).expect("Unable to read file");
 
@@ -184,14 +184,20 @@ fn main()
         }
 
         'outer: loop {
-            print!("{}", runtime);
-            let _ = std::io::stdout().flush();
-            let mut s = String::new();
+            if !hide {
+                print!("{}", runtime);
+                let _ = std::io::stdout().flush();
+            }
 
-            std::io::stdin().lock().read_line(&mut s).unwrap();
+            if !no_wait {
+                let mut s = String::new();
+            
+                std::io::stdin().lock().read_line(&mut s).unwrap();
+            }
+            
             runtime.clear();
             loop {
-                let v = runtime.single_step();
+                let v = runtime.single_step(instructions);
                 if let Err(e) = v {
                     println!("{}", e);
                     break 'outer;
